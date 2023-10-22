@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model estimatedConversion {
+  id      Int    @id @default(autoincrement())
+  low     Int?
+  medium  Int?
+  high    Int?
+  id_user Int?
+  users   users? @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "estimatedConversion_ibfk_1")
+
+  @@index([id_user], map: "id_user")
+}
+
+model users {
+  id                  Int                   @id @default(autoincrement())
+  header              Boolean?
+  name                String?               @db.VarChar(200)
+  spend               Float?                @db.Float
+  clicks              Int?
+  eyeMetric           String?               @db.VarChar(100)
+  metric1             Int?
+  metric2             Float?                @db.Float
+  metric3             Float?                @db.Float
+  eyeMetric2          String?               @db.VarChar(100)
+  metric5             Int?
+  metric6             Float?                @db.Float
+  metric7             Float?                @db.Float
+  estimatedConversion estimatedConversion[]
+}
